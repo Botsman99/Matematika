@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: matematika
+    runtime: node
+    plan: starter
+    buildCommand: "true"
+    startCommand: node server.js
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATA_DIR
+        value: /var/data
+      - key: ADMIN_PASSWORD
+        generateValue: true
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1

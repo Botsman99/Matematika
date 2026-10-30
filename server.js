@@ -8,9 +8,10 @@ const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '127.0.0.1';
 const PASSWORD = process.env.ADMIN_PASSWORD;
 const PUBLIC = path.join(__dirname, 'public');
-const UPLOADS = path.join(PUBLIC, 'uploads');
-const DATA = path.join(__dirname, 'data.json');
-const AUTH = path.join(__dirname, 'auth.json');
+const STORE = process.env.DATA_DIR || __dirname;
+const UPLOADS = process.env.DATA_DIR ? path.join(STORE, 'uploads') : path.join(PUBLIC, 'uploads');
+const DATA = path.join(STORE, 'data.json');
+const AUTH = path.join(STORE, 'auth.json');
 const MAX_UPLOAD = 15 * 1024 * 1024;
 const SESSION_MS = 8 * 60 * 60 * 1000;
 const MIME = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.pdf': 'application/pdf', '.js': 'text/javascript; charset=utf-8' };
@@ -18,6 +19,7 @@ const SIGNATURES = { '.pdf': '25504446', '.jpg': 'ffd8ff', '.png': '89504e47' };
 
 if (!PASSWORD && !fs.existsSync(AUTH)) { console.error('ADMIN_PASSWORD o‘rnatilmagan'); process.exit(1); }
 fs.mkdirSync(UPLOADS, { recursive: true });
+if (!fs.existsSync(DATA)) fs.copyFileSync(path.join(__dirname, 'data.json'), DATA);
 
 const sessions = new Map();
 const failures = new Map();
@@ -150,9 +152,10 @@ function serveStatic(res, url) {
   try { rel = decodeURIComponent(url.pathname); } catch { return send(res, 400, 'Bad request', 'text/plain'); }
   if (rel === '/') rel = '/index.html';
   if (rel === '/admin') rel = '/admin.html';
-  const file = path.normalize(path.join(PUBLIC, rel));
+  const root = rel.startsWith('/uploads/') ? UPLOADS : PUBLIC;
+  const file = path.normalize(path.join(root, rel.replace(/^\/uploads\//, '/')));
   const type = MIME[path.extname(file).toLowerCase()];
-  if (!file.startsWith(PUBLIC + path.sep) || !type || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
+  if (!file.startsWith(root + path.sep) || !type || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
     return send(res, 404, 'Topilmadi', 'text/plain; charset=utf-8');
   }
   send(res, 200, fs.readFileSync(file), type);
