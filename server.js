@@ -69,8 +69,11 @@ const text = (v, max) => typeof v === 'string' && v.trim() && v.length <= max;
 const localPath = v => v === '' || (typeof v === 'string' && /^(docs|img|uploads)\/[\w.-]+$/.test(v));
 const hasIds = list => Array.isArray(list) && list.every(x => text(x?.id, 40));
 
+const validNews = list => list === undefined || (hasIds(list) && list.every(n => /^\d{4}-\d{2}-\d{2}$/.test(n.date) && text(n.title, 200) && text(n.text, 3000)
+  && (n.link === '' || (typeof n.link === 'string' && n.link.length <= 500 && /^https:\/\/\S+$/.test(n.link))) && localPath(n.image)));
+
 function valid(d) {
-  return d && hasIds(d.publications) && hasIds(d.achievements) && hasIds(d.gallery)
+  return d && validNews(d.news) && hasIds(d.publications) && hasIds(d.achievements) && hasIds(d.gallery)
     && d.publications.every(p => Number.isInteger(p.year) && p.year >= 1990 && p.year <= 2100
       && text(p.type, 40) && text(p.title, 400) && text(p.venue, 600) && localPath(p.file))
     && d.achievements.every(a => text(a.title, 200) && text(a.text, 800))

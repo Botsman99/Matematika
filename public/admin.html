@@ -123,17 +123,20 @@ label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
 <script>
 const TYPES = ['Xalqaro jurnal', 'Milliy jurnal', 'Konferensiya'];
 const FIELDS = {
+  news: [['date', 'Sana', 'date'], ['title', 'Sarlavha', 'text'], ['text', 'Matn', 'textarea'], ['link', 'Havola (ixtiyoriy, https://…)', 'url'], ['image', 'Rasm (ixtiyoriy)', 'file']],
   publications: [['year', 'Yil', 'number'], ['type', 'Turi', 'select'], ['title', 'Sarlavha', 'textarea'], ['venue', 'Nashr ma’lumoti', 'textarea'], ['abstract', 'Annotatsiya', 'textarea'], ['file', 'PDF', 'file']],
   achievements: [['title', 'Nomi', 'text'], ['text', 'Tavsif', 'textarea']],
   gallery: [['src', 'Rasm', 'file'], ['alt', 'Izoh', 'text']],
 };
 const BLANK = {
+  news: () => ({ date: new Date().toISOString().slice(0, 10), title: '', text: '', link: '', image: '' }),
   publications: () => ({ year: new Date().getFullYear(), type: TYPES[0], title: '', venue: '', abstract: '', file: '' }),
   achievements: () => ({ title: '', text: '' }),
   gallery: () => ({ src: '', alt: '' }),
 };
 const PAGES = {
   overview: { name: 'Umumiy ko‘rinish', sub: 'Sayt ma’lumotlarining qisqacha holati' },
+  news: { name: 'Yangiliklar', sub: 'Bosh sahifadagi fan yangiliklari', add: '+ Yangilik qo‘shish', label: n => n.title || 'Yangi xabar', meta: n => n.date },
   publications: { name: 'Maqolalar', sub: 'Ilmiy maqola va tezislar', add: '+ Maqola qo‘shish', label: p => p.title || 'Yangi maqola', meta: p => p.year },
   achievements: { name: 'Yutuqlar', sub: 'Sertifikat va yutuqlar', add: '+ Yutuq qo‘shish', label: a => a.title || 'Yangi yutuq' },
   gallery: { name: 'Rasmlar', sub: 'Faoliyatdan lavhalar', add: '+ Rasm qo‘shish', label: g => g.alt || 'Yangi rasm' },
@@ -161,12 +164,12 @@ function field(item, [key, label, kind]) {
     for (const t of TYPES) input.add(new Option(t, t, false, item[key] === t));
   } else if (kind === 'textarea') {
     input = el('textarea');
-    input.rows = 2;
+    input.rows = key === 'text' && page === 'news' ? 7 : 2;
     input.value = item[key] || '';
   } else if (kind === 'file') {
     input = el('input');
     input.type = 'file';
-    input.accept = key === 'src' ? '.jpg,.jpeg,.png' : '.pdf';
+    input.accept = key === 'file' ? '.pdf' : '.jpg,.jpeg,.png';
     const cur = el('small', '', item[key] || 'Fayl tanlanmagan');
     input.onchange = async () => {
       const f = input.files[0];
@@ -212,7 +215,7 @@ const tally = (list, key) => Object.entries(list.reduce((m, x) => (m[x[key]] = (
 function overview() {
   const pubs = data.publications;
   const kpis = el('div', 'kpis');
-  for (const [n, t] of [[pubs.length, 'Jami nashrlar'], [pubs.filter(p => p.type === 'Xalqaro jurnal').length, 'Xalqaro jurnallarda'], [data.achievements.length, 'Yutuqlar'], [data.gallery.length, 'Rasmlar']]) {
+  for (const [n, t] of [[pubs.length, 'Jami nashrlar'], [pubs.filter(p => p.type === 'Xalqaro jurnal').length, 'Xalqaro jurnallarda'], [data.news.length, 'Yangiliklar'], [data.achievements.length, 'Yutuqlar']]) {
     const k = el('div', 'kpi');
     k.append(el('b', '', n), el('span', '', t));
     kpis.append(k);
@@ -305,6 +308,7 @@ function render() {
 
 async function showPanel() {
   data = await (await fetch('/api/data')).json();
+  data.news ||= [];
   $('login').hidden = true;
   $('panel').hidden = false;
   render();
