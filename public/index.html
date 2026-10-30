@@ -35,7 +35,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .hero .tan{stroke:#fff;stroke-width:2.5;stroke-dasharray:10 10}
 .hero circle{fill:var(--night);stroke:#fff;stroke-width:5}
 .stage{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:30px}
-.hero h1{font-size:clamp(64px,16vw,250px);font-weight:800;letter-spacing:-.025em;line-height:.8;margin:0 0 18px}
+.hero h1{font-size:clamp(60px,14vw,220px);font-weight:800;letter-spacing:-.025em;line-height:.8;margin:0 0 18px}
 .hero h1 span{display:block}
 .hero h1 em{display:block;font-size:.72em;color:var(--glow);line-height:.95;margin-left:.1em}
 .hero h1 b{display:inline-block;font-weight:inherit}
@@ -200,7 +200,7 @@ footer h2 em{color:var(--glow)}
  .hero svg{top:37%;height:30%}
  .hero .stage{justify-content:flex-start;padding:108px 16px 20px}
  .eyebrow{top:78px}
- .hero h1{font-size:clamp(50px,19vw,140px);margin-bottom:0}
+ .hero h1{font-size:clamp(44px,16.5vw,130px);margin-bottom:0}
  .hero h1 span{white-space:nowrap}
  .hero h1 em{font-size:.74em;margin-left:0;margin-top:4px}
  .heroFoot{margin-top:auto}
@@ -261,7 +261,7 @@ footer h2 em{color:var(--glow)}
 <div id="progress"></div>
 <nav class="nav" aria-label="Asosiy">
  <div class="links">
-  <a href="#yangiliklar">Yangiliklar</a><a href="#yol">Yo‘l</a><a href="#tadqiqot">Tadqiqot</a><a href="#maqolalar">Maqolalar</a><a href="#yutuqlar">Yutuqlar</a><a href="#faoliyat">Lavhalar</a>
+  <a href="#yangiliklar">Yangiliklar</a><a href="#maqolalar">Maqolalar</a><a href="#muallif">Muallif</a><a href="#faoliyat">Lavhalar</a>
  </div>
  <button id="burger" type="button" aria-label="Menyu" aria-expanded="false">☰</button>
  <button id="theme" type="button" aria-label="Rejimni almashtirish">◐</button>
@@ -277,10 +277,9 @@ footer h2 em{color:var(--glow)}
  </svg>
  <p class="eyebrow">MATEMATIKA · TA’LIM SIFATI · TADQIQOT</p>
  <div class="wrap stage">
-  <h1 id="name" aria-label="Ramziddin Suyunov"></h1>
+  <h1 id="name" aria-label="Matematika yangiliklari"></h1>
   <div class="heroFoot">
-   <p class="lead">Samarqand veterinariya meditsinasi instituti akademik litseyi matematika-informatika kafedrasi o‘qituvchisi, tadqiqotchi.</p>
-   <div class="read"><div>Q<b id="q"></b></div><div>C(Q)<b id="c"></b></div><div>dC/dQ<b id="mc"></b></div></div>
+   <p class="lead">Fan xabarlari, masalalar va ilmiy maqolalar. Muallif: Ramziddin Suyunov, matematika o‘qituvchisi.</p>
    <div class="heroBtns"><a class="cta" href="#yangiliklar">Yangiliklar</a><a class="cta tg" href="https://t.me/Ramziddin_Suyunov_matematik" target="_blank" rel="noopener">Telegram</a></div>
   </div>
  </div>
@@ -294,8 +293,14 @@ footer h2 em{color:var(--glow)}
  <p class="say" id="say">Ta’lim sifati tasodif emas. Uni o‘lchash, tahlil qilish va |boshqarish| mumkin.</p>
 </div>
 
-<section id="yol"><div class="wrap">
- <div class="title r"><h2>Yo‘l</h2><p>Samarqand davlat universitetidan akademik litsey kafedrasigacha.</p></div>
+<section id="maqolalar"><div class="wrap">
+ <div class="title r"><h2>Maqolalar</h2><p>Sarlavhani bosing: annotatsiya va to‘liq matn ochiladi.</p></div>
+ <div class="tools r" id="tools"></div>
+ <ul class="pubs r" id="pubs"></ul>
+</div></section>
+
+<section id="muallif"><div class="wrap">
+ <div class="title r"><h2>Muallif haqida</h2><p>Ramziddin Suyunov: matematika-informatika o‘qituvchisi, tadqiqotchi.</p></div>
  <div class="tl" id="tl"><i class="fill" id="tlFill"></i>
   <article class="r"><time>2007–2011</time><div><h3>Bakalavriat, matematika</h3><p>Alisher Navoiy nomidagi Samarqand davlat universiteti</p></div></article>
   <article class="r"><time>2011–2013</time><div><h3>Magistratura, matematika</h3><p>Alisher Navoiy nomidagi Samarqand davlat universiteti</p></div></article>
@@ -303,38 +308,7 @@ footer h2 em{color:var(--glow)}
   <article class="r"><time>2015–2017</time><div><h3>Matematika o‘qituvchisi</h3><p>Samarqand qishloq xo‘jalik instituti qoshidagi 2-son akademik litsey</p></div></article>
   <article class="r"><time>2017 — hozir</time><div><h3>Matematika-informatika kafedrasi o‘qituvchisi</h3><p>Samarqand veterinariya meditsinasi instituti akademik litseyi</p></div></article>
  </div>
-</div></section>
-
-<section id="tadqiqot"><div class="wrap">
- <div class="title r"><h2>Tadqiqot</h2><p>Ilmiy ishlarning markaziy savoli: ta’lim sifatini nima belgilaydi?</p></div>
- <div class="res r">
-  <div class="orbit" id="orbit"><div class="hub">Ta’lim sifati</div></div>
-  <div class="detail" aria-live="polite"><h3 id="dT"></h3><p id="dP"></p></div>
- </div>
-</div></section>
-
-<section id="maqolalar"><div class="wrap">
- <div class="title r"><h2>Maqolalar</h2><p>Sarlavhani bosing: annotatsiya va to‘liq matn ochiladi.</p></div>
- <div class="tools r" id="tools"></div>
- <ul class="pubs r" id="pubs"></ul>
-</div></section>
-
-<section id="statistika"><div class="wrap">
- <div class="title r"><h2>Raqamlarda</h2></div>
- <div class="bento r" id="bento">
-  <div class="box"><h3>Yillar bo‘yicha nashrlar</h3><div class="columns" id="byYear"></div></div>
-  <div class="box"><h3>Nashr turlari</h3><div class="donut" id="donut"><span id="dTotal"></span></div><ul class="legend" id="legend"></ul></div>
-  <div class="box"><h3>Milliy sertifikat</h3>
-   <div class="small"><span>Algebra va matematik analiz</span><b>60.4</b></div><div class="score"><i data-w="60.4"></i></div>
-   <div class="small"><span>Geometriya</span><b>34.5</b></div><div class="score"><i data-w="34.5"></i></div>
-   <div class="small"><span>Umumiy ball</span><b>94.9</b></div><div class="score"><i data-w="94.9"></i></div>
-  </div>
- </div>
-</div></section>
-
-<section id="yutuqlar"><div class="wrap">
- <div class="title r"><h2>Yutuqlar</h2></div>
- <div class="docs" id="ach"></div>
+ <div class="docs" id="ach" style="margin-top:48px"></div>
 </div></section>
 
 <section id="faoliyat">
@@ -360,7 +334,7 @@ const $ = id => document.getElementById(id);
 const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-$('name').innerHTML = '<span aria-hidden="true">' + [...'Ramziddin'].map(c => `<b>${c}</b>`).join('') + '</span><em aria-hidden="true">' + [...'Suyunov'].map(c => `<b>${c}</b>`).join('') + '</em>';
+$('name').innerHTML = '<span aria-hidden="true">' + [...'Matematika'].map(c => `<b>${c}</b>`).join('') + '</span><em aria-hidden="true">' + [...'yangiliklari'].map(c => `<b>${c}</b>`).join('') + '</em>';
 $('band').textContent = 'Tayanch kompetensiyalar ✦ Ta’lim sifati ✦ Monitoring ✦ Diagnostika ✦ Matematika ✦ '.repeat(6);
 [['∫', 8, 58, 88, 13], ['Σ', 78, 62, 70, 17], ['π', 44, 30, 60, 11], ['dx', 90, 34, 44, 15], ['∂', 22, 22, 56, 19], ['∞', 62, 12, 50, 14]].forEach(([c, x, y, z, t]) => {
   const n = document.createElement('span');
@@ -401,34 +375,9 @@ function setQ(q) {
   const t = $('tan');
   t.setAttribute('x1', x - d); t.setAttribute('y1', y + s * d);
   t.setAttribute('x2', x + d); t.setAttribute('y2', y - s * d);
-  $('q').textContent = q.toFixed(1); $('c').textContent = C(q).toFixed(1); $('mc').textContent = m.toFixed(1);
 }
 setQ(6);
 $('hero').addEventListener('pointermove', e => setQ(e.clientX / innerWidth * 10));
-
-const TOPICS = [
-  ['Monitoring', 'Ta’lim jarayoni natijalarini muntazam kuzatib borish sifatni boshqarishning asosi hisoblanadi.'],
-  ['Diagnostika', 'O‘quvchilarning bilim va ko‘nikma darajasini aniqlash metodik qarorlarga tayanch bo‘ladi.'],
-  ['Pedagogik texnologiyalar', 'Zamonaviy texnologiyalar kompetensiyalarni shakllantirishda muhim vosita sifatida ko‘riladi.'],
-  ['Mustaqil faoliyat', 'Kompetensiyaviy yondashuv o‘quvchida mustaqil faoliyat tajribasini shakllantirishga yo‘naltirilgan.'],
-  ['Ijodkorlik', 'Tayanch kompetensiyalar o‘quvchining ijodiy qobiliyatini rivojlantirishga xizmat qiladi.'],
-  ['Universal bilim', 'O‘quvchilarni universal bilim va ko‘nikmalar bilan ta’minlash yondashuvning maqsadlaridan biridir.'],
-];
-TOPICS.forEach(([name, text], i) => {
-  const b = document.createElement('button');
-  const a = i / TOPICS.length * 2 * Math.PI - Math.PI / 2;
-  b.type = 'button';
-  b.textContent = name;
-  b.style.left = 50 + 41 * Math.cos(a) + '%';
-  b.style.top = 50 + 41 * Math.sin(a) + '%';
-  const pick = () => {
-    document.querySelectorAll('#orbit button').forEach(x => x.classList.toggle('on', x === b));
-    $('dT').textContent = name; $('dP').textContent = text;
-  };
-  b.onclick = b.onmouseenter = pick;
-  $('orbit').append(b);
-  if (!i) pick();
-});
 
 function openDlg(html, cls) {
   const d = $('dlg');
@@ -471,18 +420,7 @@ fetch('/api/data').then(r => r.json()).then(d => {
   $('tools').querySelector('input').oninput = e => { search = e.target.value.toLowerCase(); drawPubs(); };
   drawPubs();
 
-  const years = {}, count = {};
-  for (const p of pubs) { years[p.year] = (years[p.year] || 0) + 1; count[p.type] = (count[p.type] || 0) + 1; }
-  const max = Math.max(...Object.values(years));
-  $('byYear').innerHTML = Object.entries(years).map(([y, n]) => `<div title="${y}: ${n} ta"><b>${n}</b><i data-h="${n / max * 75}"></i><span>${y}</span></div>`).join('');
-  const colors = ['var(--accent)', 'var(--amber)', 'var(--teal)', 'var(--muted)'];
-  let at = 0;
-  const entries = Object.entries(count).sort((a, b) => b[1] - a[1]);
-  $('donut').style.background = `conic-gradient(${entries.map(([, n], i) => { const s = at; at += n / pubs.length * 100; return `${colors[i % 4]} ${s}% ${at}%`; }).join(',')})`;
-  $('dTotal').textContent = pubs.length;
-  $('legend').innerHTML = entries.map(([t, n], i) => `<li><i style="background:${colors[i % 4]}"></i>${esc(t)}<b>${n}</b></li>`).join('');
-
-  $('ach').innerHTML = d.achievements.map((a, i) => `<article class="doc r"><div><small>HUJJAT № ${String(i + 1).padStart(2, '0')}</small><h3>${esc(a.title)}</h3><p>${esc(a.text)}</p></div></article>`).join('');
+  $('ach').innerHTML = d.achievements.map((a, i) => `<article class="doc r"><div><h3>${esc(a.title)}</h3><p>${esc(a.text)}</p></div></article>`).join('');
   $('gal').innerHTML = [...d.gallery, ...d.gallery].map((g, i) => `<button type="button" ${i >= d.gallery.length ? 'tabindex="-1" aria-hidden="true"' : ''}><img src="${esc(g.src)}" alt="${esc(g.alt)}" draggable="false"></button>`).join('');
   carousel();
   observe();
