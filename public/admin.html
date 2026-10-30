@@ -314,6 +314,7 @@ document.querySelector('#login form').onsubmit = async e => {
   e.preventDefault();
   const r = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ password: $('pw').value }) });
   if (r.ok) { $('pw').value = ''; showPanel(); }
+  else if (r.status === 404) $('loginMsg').textContent = 'Bu manzilda admin server ishlamaydi. Panel kompyuterda ishga tushirilgan serverda ochiladi.';
   else $('loginMsg').textContent = (await r.json()).error;
 };
 $('logout').onclick = async () => { await fetch('/api/logout', { method: 'POST' }); location.reload(); };
