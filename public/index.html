@@ -459,7 +459,7 @@ fetch('/api/data').then(r => r.json()).then(d => {
   pubs = [...d.publications].sort((a, b) => b.year - a.year);
   const news = [...(d.news || [])].sort((a, b) => b.date.localeCompare(a.date));
   $('news').className = news.length ? 'news' : '';
-  $('news').innerHTML = news.map(n => `<article class="post r">${n.image ? `<img src="${esc(n.image)}" alt="" loading="lazy">` : ''}<div><time>${esc(n.date)}</time><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p>${n.link ? `<a href="${esc(n.link)}" target="_blank" rel="noopener">Batafsil</a>` : ''}</div></article>`).join('') || `<div class="noNews r"><p>Yangi xabarlar Telegram kanalida e’lon qilinadi.</p><a class="cta" href="https://t.me/Ramziddin_Suyunov_matematik" target="_blank" rel="noopener">Telegramga o‘tish</a></div>`;
+  $('news').innerHTML = news.map(n => `<article class="post r">${n.image ? `<img src="${esc(n.image)}" alt="" loading="lazy">` : ''}<div><time>${esc(n.date)}</time><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p>${n.link ? `<a href="${esc(n.link)}" target="_blank" rel="noopener">Batafsil</a>` : ''}</div></article>`).join('') || `<div class="noNews r"><p>Savollar bo‘lsa, Telegram orqali yozishingiz mumkin.</p><a class="cta" href="https://t.me/Ramziddin_Suyunov_matematik" target="_blank" rel="noopener">Telegramda yozish</a></div>`;
   const types = [...new Set(pubs.map(p => p.type))];
   $('tools').innerHTML = ['Hammasi', ...types].map((t, i) => `<button type="button" class="${i ? '' : 'on'}">${esc(t)}</button>`).join('') + '<input type="search" placeholder="Qidirish" aria-label="Maqolalardan qidirish">';
   $('tools').onclick = e => {
