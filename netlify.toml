@@ -1,0 +1,13 @@
+[build]
+  command = "cp data.json public/data.json"
+  publish = "public"
+
+[[redirects]]
+  from = "/api/data"
+  to = "/data.json"
+  status = 200
+
+[[redirects]]
+  from = "/api/session"
+  to = "/session.json"
+  status = 200
