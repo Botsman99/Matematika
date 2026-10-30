@@ -1,0 +1,107 @@
+{
+  "publications": [
+    {
+      "id": "p1",
+      "year": 2025,
+      "type": "Milliy jurnal",
+      "title": "Akademik litseylarda o‘quvchilarning tayanch kompetensiyalarini shakllantirish asosida ta’lim sifatini takomillashtirish",
+      "venue": "Ta’lim, fan va innovatsiya, 2025, 12-son, 17–19-betlar. ISSN 2181-8274",
+      "file": "docs/talim-fan-innovatsiya-2025.pdf",
+      "abstract": "Kompetensiyaviy yondashuv asosida o‘quvchilarning bilim, ko‘nikma, mustaqil fikrlash va o‘zini rivojlantirish kompetensiyalari tahlil qilinib, ularni shakllantirishning pedagogik shartlari aniqlanadi."
+    },
+    {
+      "id": "p2",
+      "year": 2025,
+      "type": "Xalqaro jurnal",
+      "title": "Improving the Quality of Education through the Development of Core Competencies in Academic Lyceums",
+      "venue": "International Journal of Formal Education, 4-jild, 7-son, 170–172-betlar. ISSN 2720-6874",
+      "file": "docs/ijfe-2025.pdf",
+      "abstract": "Tayanch kompetensiyalarni shakllantirish orqali akademik litseylarda ta’lim sifatini oshirish tahlil qilinadi; monitoring, diagnostika va zamonaviy pedagogik texnologiyalarning o‘rni yoritiladi."
+    },
+    {
+      "id": "p3",
+      "year": 2025,
+      "type": "Xalqaro jurnal",
+      "title": "Iqtisodiy masalalarni matematik usullar bilan yechish",
+      "venue": "Xusanov Bazar bilan hammualliflikda. Miasto Przyszłości, 63-jild, 170–174-betlar. ISSN-L 2544-980X",
+      "file": "docs/miasto-przyszlosci-2025.pdf",
+      "abstract": "Differensial hisob yordamida to‘la va limit xarajatlar, limit tushum va limit foyda kabi iqtisodiy masalalarning matematik modellari tuziladi va yechish usullari ko‘rsatiladi."
+    },
+    {
+      "id": "p4",
+      "year": 2025,
+      "type": "Konferensiya",
+      "title": "Akademik litseylarda ta’lim sifatini oshirishda tayanch kompetensiyalarni shakllantirish",
+      "venue": "Konferensiya to‘plami, Samarqand davlat veterinariya meditsinasi, chorvachilik va biotexnologiyalar universiteti, 12–13-mart, 262–265-betlar",
+      "file": "docs/konferensiya-2025.pdf",
+      "abstract": "Tayanch kompetensiyalarni shakllantirish orqali akademik litseylarda ta’lim sifatini oshirish tahlil qilinadi; monitoring, diagnostika va zamonaviy pedagogik texnologiyalarning o‘rni yoritiladi."
+    },
+    {
+      "id": "p5",
+      "year": 2024,
+      "type": "Milliy jurnal",
+      "title": "Akademik litseylarda tayanch kompetensiyalarni shakllantirish orqali ta’lim sifatini oshirish",
+      "venue": "O‘zMU xabarlari (ACTA NUUz), 1/12/1, 192–193-betlar",
+      "file": "docs/acta-nuuz-2024.pdf",
+      "abstract": "Tayanch kompetensiyalarni shakllantirish orqali akademik litseylarda ta’lim sifatini oshirish tahlil qilinadi; monitoring, diagnostika va zamonaviy pedagogik texnologiyalarning o‘rni yoritiladi."
+    },
+    {
+      "id": "p6",
+      "year": 2023,
+      "type": "Milliy jurnal",
+      "title": "Akademik litseylarda ta’lim sifatini boshqarishning pedagogik aspektlari",
+      "venue": "O‘zMU xabarlari (ACTA NUUz), 1/10/1, 158–160-betlar",
+      "file": "docs/acta-nuuz-2023.pdf",
+      "abstract": "Akademik litseyda ta’lim sifatini boshqarishning asosiy tushunchalari aniqlashtiriladi, sifatni baholash monitoring va yagona davlat imtihoni kabi usullar orqali ko‘rib chiqiladi."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "a1",
+      "title": "Milliy sertifikat",
+      "text": "Matematika fanidan 94.9 ball (UZ24 133097). 2024-yil 16-yanvarda berilgan, 2027-yil 15-yanvargacha amal qiladi."
+    },
+    {
+      "id": "a2",
+      "title": "Malaka oshirish",
+      "text": "SamDU huzuridagi mintaqaviy markazda matematika yo‘nalishi bo‘yicha, 8 kredit (2024-yil 19-sentabr, MO-675-16386)."
+    },
+    {
+      "id": "a3",
+      "title": "«Menejment» o‘quv qo‘llanmasi",
+      "text": "Hammualliflikda. Oliy ta’lim, fan va innovatsiyalar vazirligining nashr ruxsatnomasi: 2024-yil 29-maydagi 194-son buyruq, ro‘yxat raqami 194-516."
+    }
+  ],
+  "gallery": [
+    {
+      "id": "g1",
+      "src": "img/guruh.jpg",
+      "alt": "O‘quvchilar bilan guruh surati, bayroqlar oldida"
+    },
+    {
+      "id": "g2",
+      "src": "img/lab1.jpg",
+      "alt": "Laboratoriyada o‘quvchilarga jihozlar tanishtirilmoqda"
+    },
+    {
+      "id": "g3",
+      "src": "img/zal1.jpg",
+      "alt": "Zalda o‘quvchilar bilan uchrashuv"
+    },
+    {
+      "id": "g4",
+      "src": "img/lab2.jpg",
+      "alt": "Laboratoriyada suhbat"
+    },
+    {
+      "id": "g5",
+      "src": "img/zal2.jpg",
+      "alt": "Sahnada so‘zga chiqqan ma’ruzachilar"
+    },
+    {
+      "id": "g6",
+      "src": "img/zal3.jpg",
+      "alt": "Keng zalda o‘quvchilar oldida nutq"
+    }
+  ]
+}

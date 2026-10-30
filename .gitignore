@@ -1,0 +1,5 @@
+admin-parol.txt
+auth.json
+.env
+*.tmp
+node_modules/

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Boshqaruv paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f3ee;--card:#fff;--ink:#0a0f3c;--muted:#474c70;--line:#dcdae8;--blue:#2230f0;--blue2:#1620c0;--sun:#ffc61a;--danger:#b3261e;--head:"Bricolage Grotesque",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 "Instrument Sans",system-ui,sans-serif}
+h1,h2{font-family:var(--head);margin:0;letter-spacing:-.03em}
+[hidden]{display:none!important}
+button,input,textarea,select{font:inherit}
+:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+#login{min-height:100vh;display:grid;place-items:center;background:var(--blue);padding:16px}
+#login form{width:100%;max-width:440px;display:grid;gap:16px;color:#fff}
+#login h1{font-size:clamp(48px,9vw,76px);font-weight:800;line-height:.92}
+#login p{margin:0;color:#e2e5ff}
+#login label{color:#fff}
+#login input{background:#fff;padding:14px;border:0;border-radius:12px}
+#loginMsg{color:var(--sun);font-weight:600}
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+aside{background:var(--blue);color:#fff;padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:30px}
+.logo{display:flex;align-items:center;gap:10px;padding:0 8px;font:800 19px var(--head);letter-spacing:-.02em}
+.logo i{width:42px;height:42px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center;font:800 16px var(--head);font-style:normal}
+.logo small{display:block;font:500 11px var(--mono);letter-spacing:0;color:#e2e5ff}
+.menu{display:grid;gap:6px;flex:1;align-content:start}
+.menu button{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;color:#fff;padding:12px 14px;border-radius:999px;cursor:pointer;text-align:left;font-weight:600;white-space:nowrap;transition:background .2s}
+.menu button:hover{background:var(--blue2)}
+.menu button.on{background:var(--sun);color:var(--ink)}
+.menu span{font:500 12px var(--mono)}
+.foot{display:grid;gap:2px}
+.foot a,.foot button{color:#fff;background:none;border:0;padding:9px 14px;text-align:left;text-decoration:none;cursor:pointer;border-radius:999px;font-weight:600}
+.foot a:hover,.foot button:hover{background:var(--blue2)}
+main{padding:34px 40px 110px;min-width:0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:30px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.head h1{font-size:clamp(42px,6.5vw,88px);font-weight:800;line-height:.95;letter-spacing:-.045em}
+.head p{margin:8px 0 0;color:var(--muted)}
+.btn{padding:11px 20px;border:2px solid var(--ink);border-radius:999px;background:none;color:var(--ink);cursor:pointer;font-weight:700;transition:transform .15s}
+.btn:hover:not(:disabled){transform:scale(1.04)}
+.btn.primary{background:var(--sun);border-color:var(--sun);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+.kpi{border-radius:20px;padding:20px;background:var(--ink);color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.kpi:nth-child(2){background:var(--blue)}
+.kpi:nth-child(3){background:var(--sun);color:var(--ink)}
+.kpi:nth-child(4){background:var(--card);color:var(--ink);border:2px solid var(--ink)}
+.kpi b{font:800 clamp(48px,6vw,76px)/1 var(--head);letter-spacing:-.04em}
+.kpi span{font-weight:600;font-size:14px}
+.panel{background:var(--card);border-radius:20px;padding:22px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel h2{font-size:22px;margin-bottom:14px}
+.row{display:grid;grid-template-columns:110px 1fr 24px;gap:10px;align-items:center;padding:6px 0}
+.row i{display:block;height:14px;background:var(--blue);border-radius:0 7px 7px 0;min-width:4px}
+.row b{text-align:right;font-family:var(--mono)}
+.recent{list-style:none;margin:0;padding:0}
+.recent li{padding:11px 0;border-top:1px solid var(--line);font-weight:600}
+.recent li:first-child{border-top:0}
+.recent small{display:block;color:var(--muted);font:500 12px var(--mono);margin-top:2px}
+.tools{margin-bottom:16px}
+input,textarea,select{color:var(--ink);padding:11px 13px;border:1px solid var(--line);border-radius:10px;width:100%;background:#fff}
+.tools input{border-radius:999px;border:2px solid var(--ink);padding:11px 20px}
+details.item{background:var(--card);border-radius:16px;margin-bottom:10px;transition:box-shadow .2s}
+details.item:hover{box-shadow:0 0 0 2px var(--blue)}
+details.item[open]{box-shadow:0 0 0 2px var(--ink)}
+details.item summary{padding:16px 20px;cursor:pointer;font:700 17px/1.25 var(--head);overflow-wrap:anywhere}
+details.item summary small{color:var(--blue);font:500 13px var(--mono);margin-left:8px}
+.form{display:grid;gap:12px;padding:2px 20px 20px}
+label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+.del{border:0;background:none;color:var(--danger);cursor:pointer;justify-self:start;padding:6px 0;font-weight:700}
+.empty{color:var(--muted);padding:30px;text-align:center}
+.save{position:fixed;right:24px;bottom:20px;display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 8px 8px 22px;max-width:calc(100vw - 32px)}
+#msg{font-size:14px}
+@media(max-width:820px){
+ .app{grid-template-columns:minmax(0,1fr)}
+ aside{position:static;height:auto;padding:12px;gap:10px}
+ .menu{display:flex;overflow-x:auto}
+ .menu button{width:auto;gap:8px}
+ .foot{display:flex}
+ main{padding:22px 16px 100px}
+ .kpis{grid-template-columns:1fr 1fr}
+ .kpi{min-height:120px}
+ input,textarea,select{font-size:16px}
+ .menu button{min-height:44px}
+ .head h1{font-size:42px}
+ .row{grid-template-columns:96px 1fr 22px}
+ .grid{grid-template-columns:minmax(0,1fr)}
+ .save{right:16px;bottom:12px}
+}
+</style>
+</head>
+<body>
+<div id="login" hidden>
+ <form>
+  <h1>Boshqaruv paneli</h1>
+  <p>Davom etish uchun parolni kiriting</p>
+  <label>Parol <input id="pw" type="password" required autocomplete="current-password"></label>
+  <button class="btn primary">Kirish</button>
+  <span id="loginMsg" role="alert"></span>
+ </form>
+</div>
+
+<div class="app" id="panel" hidden>
+ <aside>
+  <div class="logo"><i>RS</i><div>R. Suyunov<small>Boshqaruv paneli</small></div></div>
+  <nav class="menu" id="menu" aria-label="Bo‘limlar"></nav>
+  <div class="foot"><a href="/" target="_blank" rel="noopener">Saytni ko‘rish</a><button id="logout" type="button">Chiqish</button></div>
+ </aside>
+ <main>
+  <div class="head">
+   <div><h1 id="title"></h1><p id="subtitle"></p></div>
+   <button class="btn primary" id="add" type="button"></button>
+  </div>
+  <div id="view"></div>
+ </main>
+ <div class="save"><span id="msg" role="status">O‘zgarish yo‘q</span><button id="save" class="btn primary" type="button" disabled>Saqlash</button></div>
+</div>
+
+<script>
+const TYPES = ['Xalqaro jurnal', 'Milliy jurnal', 'Konferensiya'];
+const FIELDS = {
+  publications: [['year', 'Yil', 'number'], ['type', 'Turi', 'select'], ['title', 'Sarlavha', 'textarea'], ['venue', 'Nashr ma’lumoti', 'textarea'], ['abstract', 'Annotatsiya', 'textarea'], ['file', 'PDF', 'file']],
+  achievements: [['title', 'Nomi', 'text'], ['text', 'Tavsif', 'textarea']],
+  gallery: [['src', 'Rasm', 'file'], ['alt', 'Izoh', 'text']],
+};
+const BLANK = {
+  publications: () => ({ year: new Date().getFullYear(), type: TYPES[0], title: '', venue: '', abstract: '', file: '' }),
+  achievements: () => ({ title: '', text: '' }),
+  gallery: () => ({ src: '', alt: '' }),
+};
+const PAGES = {
+  overview: { name: 'Umumiy ko‘rinish', sub: 'Sayt ma’lumotlarining qisqacha holati' },
+  publications: { name: 'Maqolalar', sub: 'Ilmiy maqola va tezislar', add: '+ Maqola qo‘shish', label: p => p.title || 'Yangi maqola', meta: p => p.year },
+  achievements: { name: 'Yutuqlar', sub: 'Sertifikat va yutuqlar', add: '+ Yutuq qo‘shish', label: a => a.title || 'Yangi yutuq' },
+  gallery: { name: 'Rasmlar', sub: 'Faoliyatdan lavhalar', add: '+ Rasm qo‘shish', label: g => g.alt || 'Yangi rasm' },
+  settings: { name: 'Sozlamalar', sub: 'Parolni o‘zgartirish' },
+};
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+};
+let data, page = 'overview', query = '', openId = null;
+
+function dirty(text = 'Saqlanmagan o‘zgarishlar bor') {
+  $('msg').textContent = text;
+  $('save').disabled = false;
+}
+
+function field(item, [key, label, kind]) {
+  const wrap = el('label', '', label);
+  let input;
+  if (kind === 'select') {
+    input = el('select');
+    for (const t of TYPES) input.add(new Option(t, t, false, item[key] === t));
+  } else if (kind === 'textarea') {
+    input = el('textarea');
+    input.rows = 2;
+    input.value = item[key] || '';
+  } else if (kind === 'file') {
+    input = el('input');
+    input.type = 'file';
+    input.accept = key === 'src' ? '.jpg,.jpeg,.png' : '.pdf';
+    const cur = el('small', '', item[key] || 'Fayl tanlanmagan');
+    input.onchange = async () => {
+      const f = input.files[0];
+      if (!f) return;
+      $('msg').textContent = 'Yuklanmoqda…';
+      const r = await fetch('/api/upload?name=' + encodeURIComponent(f.name), { method: 'POST', body: f });
+      const j = await r.json();
+      if (!r.ok) { $('msg').textContent = j.error; return; }
+      item[key] = j.path;
+      cur.textContent = j.path;
+      dirty('Fayl yuklandi, saqlashni bosing');
+    };
+    wrap.append(input, cur);
+    return wrap;
+  } else {
+    input = el('input');
+    input.type = kind;
+    input.value = item[key];
+  }
+  input.oninput = () => { item[key] = kind === 'number' ? Number(input.value) : input.value; dirty(); };
+  input.onchange = input.oninput;
+  wrap.append(input);
+  return wrap;
+}
+
+function bars(title, counts) {
+  const box = el('div', 'panel');
+  box.append(el('h2', '', title));
+  const max = Math.max(1, ...counts.map(c => c[1]));
+  for (const [k, n] of counts) {
+    const row = el('div', 'row');
+    row.title = `${k}: ${n} ta`;
+    const bar = el('i');
+    bar.style.width = n / max * 100 + '%';
+    row.append(el('span', '', k), bar, el('b', '', n));
+    box.append(row);
+  }
+  return box;
+}
+
+const tally = (list, key) => Object.entries(list.reduce((m, x) => (m[x[key]] = (m[x[key]] || 0) + 1, m), {}));
+
+function overview() {
+  const pubs = data.publications;
+  const kpis = el('div', 'kpis');
+  for (const [n, t] of [[pubs.length, 'Jami nashrlar'], [pubs.filter(p => p.type === 'Xalqaro jurnal').length, 'Xalqaro jurnallarda'], [data.achievements.length, 'Yutuqlar'], [data.gallery.length, 'Rasmlar']]) {
+    const k = el('div', 'kpi');
+    k.append(el('b', '', n), el('span', '', t));
+    kpis.append(k);
+  }
+  const grid = el('div', 'grid');
+  grid.append(bars('Yillar bo‘yicha nashrlar', tally(pubs, 'year').sort((a, b) => a[0] - b[0])), bars('Nashr turlari', tally(pubs, 'type').sort((a, b) => b[1] - a[1])));
+  const recent = el('div', 'panel');
+  recent.style.marginTop = '14px';
+  const ul = el('ul', 'recent');
+  for (const p of [...pubs].sort((a, b) => b.year - a.year).slice(0, 4)) {
+    const li = el('li', '', p.title);
+    li.append(el('small', '', `${p.year} · ${p.type}`));
+    ul.append(li);
+  }
+  recent.append(el('h2', '', 'So‘nggi nashrlar'), ul);
+  return [kpis, grid, recent];
+}
+
+function list() {
+  const items = data[page].filter(x => JSON.stringify(x).toLowerCase().includes(query.toLowerCase()));
+  const tools = el('div', 'tools');
+  const search = el('input');
+  search.type = 'search';
+  search.placeholder = 'Qidirish…';
+  search.setAttribute('aria-label', 'Qidirish');
+  search.value = query;
+  search.oninput = () => { query = search.value; render(); $('view').querySelector('input[type=search]').focus(); };
+  tools.append(search);
+  const cards = items.map(item => {
+    const d = el('details', 'item');
+    d.open = item.id === openId;
+    const s = el('summary', '', PAGES[page].label(item));
+    if (PAGES[page].meta) s.append(el('small', '', PAGES[page].meta(item)));
+    const form = el('div', 'form');
+    form.append(...FIELDS[page].map(f => field(item, f)));
+    const del = el('button', 'del', 'O‘chirish');
+    del.type = 'button';
+    del.onclick = () => {
+      if (!confirm('O‘chirilsinmi?')) return;
+      data[page] = data[page].filter(x => x !== item);
+      dirty();
+      render();
+    };
+    form.append(del);
+    d.append(s, form);
+    return d;
+  });
+  return [tools, ...(cards.length ? cards : [el('div', 'empty', 'Hech narsa topilmadi')])];
+}
+
+function settings() {
+  const form = el('form', 'panel');
+  form.style.cssText = 'display:grid;gap:14px;max-width:460px';
+  const inputs = [['current', 'Joriy parol', 'current-password'], ['next', 'Yangi parol (kamida 8 belgi)', 'new-password'], ['again', 'Yangi parolni takrorlang', 'new-password']].map(([name, label, ac]) => {
+    const wrap = el('label', '', label), i = el('input');
+    i.type = 'password'; i.name = name; i.required = true; i.autocomplete = ac;
+    wrap.append(i);
+    return wrap;
+  });
+  const note = el('span');
+  note.setAttribute('role', 'status');
+  const btn = el('button', 'btn primary', 'Parolni o‘zgartirish');
+  form.append(...inputs, btn, note);
+  form.onsubmit = async e => {
+    e.preventDefault();
+    const { current, next, again } = form.elements;
+    if (next.value !== again.value) { note.textContent = 'Yangi parollar mos emas'; return; }
+    const r = await fetch('/api/password', { method: 'POST', body: JSON.stringify({ current: current.value, next: next.value }) });
+    note.textContent = r.ok ? 'Parol o‘zgartirildi' : (await r.json()).error;
+    if (r.ok) form.reset();
+  };
+  return [form];
+}
+
+function render() {
+  const p = PAGES[page];
+  $('title').textContent = p.name;
+  $('subtitle').textContent = p.sub;
+  $('add').hidden = !p.add;
+  $('add').textContent = p.add || '';
+  $('view').replaceChildren(...(page === 'overview' ? overview() : page === 'settings' ? settings() : list()));
+  $('menu').replaceChildren(...Object.entries(PAGES).map(([key, v]) => {
+    const b = el('button', key === page ? 'on' : '', v.name);
+    b.type = 'button';
+    if (data[key]) b.append(el('span', '', data[key].length));
+    b.onclick = () => { page = key; query = ''; openId = null; render(); };
+    return b;
+  }));
+}
+
+async function showPanel() {
+  data = await (await fetch('/api/data')).json();
+  $('login').hidden = true;
+  $('panel').hidden = false;
+  render();
+}
+
+document.querySelector('#login form').onsubmit = async e => {
+  e.preventDefault();
+  const r = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ password: $('pw').value }) });
+  if (r.ok) { $('pw').value = ''; showPanel(); }
+  else $('loginMsg').textContent = (await r.json()).error;
+};
+$('logout').onclick = async () => { await fetch('/api/logout', { method: 'POST' }); location.reload(); };
+$('add').onclick = () => {
+  const item = { id: crypto.randomUUID(), ...BLANK[page]() };
+  data[page].unshift(item);
+  openId = item.id;
+  query = '';
+  dirty();
+  render();
+};
+$('save').onclick = async () => {
+  const r = await fetch('/api/data', { method: 'PUT', body: JSON.stringify(data) });
+  $('msg').textContent = r.ok ? 'Saqlandi' : (await r.json()).error;
+  $('save').disabled = r.ok;
+};
+window.onbeforeunload = e => { if (!$('save').disabled) e.preventDefault(); };
+fetch('/api/session').then(r => r.json()).then(s => {
+  if (s.admin) showPanel(); else $('login').hidden = false;
+});
+</script>
+</body>
+</html>
