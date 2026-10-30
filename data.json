@@ -103,5 +103,31 @@
       "src": "img/zal3.jpg",
       "alt": "Keng zalda o‘quvchilar oldida nutq"
     }
+  ],
+  "news": [
+    {
+      "id": "demo1",
+      "date": "2026-10-31",
+      "title": "Namuna: Algebra so‘zi qayerdan kelgan?",
+      "text": "Bu namuna xabar. «Algebra» so‘zi Muhammad al-Xorazmiyning «Al-kitob al-muxtasar fi hisob al-jabr val-muqobala» asari nomidagi «al-jabr» so‘zidan kelib chiqqan. «Algoritm» atamasi esa olimning nomi bilan bog‘liq.",
+      "link": "",
+      "image": ""
+    },
+    {
+      "id": "demo2",
+      "date": "2026-10-30",
+      "title": "Namuna: Hosila iqtisodda nima uchun kerak?",
+      "text": "Bu namuna xabar. Xarajat funksiyasining hosilasi limit xarajatni, ya’ni yana bir birlik mahsulot qancha turishini ko‘rsatadi.",
+      "link": "",
+      "image": ""
+    },
+    {
+      "id": "demo3",
+      "date": "2026-10-29",
+      "title": "Namuna: Kunning masalasi",
+      "text": "Bu namuna xabar. 1 dan 100 gacha bo‘lgan sonlar yig‘indisini tez toping. Javob: 5050.",
+      "link": "",
+      "image": ""
+    }
   ]
 }
