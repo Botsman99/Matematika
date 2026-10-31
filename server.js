@@ -14,7 +14,7 @@ const DATA = path.join(STORE, 'data.json');
 const AUTH = path.join(STORE, 'auth.json');
 const MAX_UPLOAD = 15 * 1024 * 1024;
 const SESSION_MS = 8 * 60 * 60 * 1000;
-const MIME = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.pdf': 'application/pdf', '.js': 'text/javascript; charset=utf-8' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.pdf': 'application/pdf', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.woff2': 'font/woff2' };
 const SIGNATURES = { '.pdf': '25504446', '.jpg': 'ffd8ff', '.png': '89504e47' };
 
 if (!PASSWORD && !fs.existsSync(AUTH)) { console.error('ADMIN_PASSWORD o‘rnatilmagan'); process.exit(1); }
@@ -155,6 +155,7 @@ function serveStatic(res, url) {
   try { rel = decodeURIComponent(url.pathname); } catch { return send(res, 400, 'Bad request', 'text/plain'); }
   if (rel === '/') rel = '/index.html';
   if (rel === '/admin') rel = '/admin.html';
+  if (rel === '/oquv') rel = '/oquv.html';
   const root = rel.startsWith('/uploads/') ? UPLOADS : PUBLIC;
   const file = path.normalize(path.join(root, rel.replace(/^\/uploads\//, '/')));
   const type = MIME[path.extname(file).toLowerCase()];
