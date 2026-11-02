@@ -31,18 +31,19 @@ function withPassword(user, password) {
 }
 const publicUser = ({ salt, hash, ...u }) => u;
 
+const demoQuestions = () => Array.from({ length: 30 }, (_, i) => {
+  const n = i + 2;
+  return { q: `f(x)=x² uchun f'(${n}) nechaga teng?`, options: [n, 2 * n, 2 * n + 3, 2 * n + 1].map(String), correct: 1 };
+});
+
 function seed() {
   const teacher = withPassword({ id: 't1', role: 'teacher', name: 'Demo o‘qituvchi', phone: '', login: 'demo_oqituvchi', status: 'active', at: Date.now() }, DEMO_PASSWORD);
   const student = withPassword({ id: 's1', role: 'student', name: 'Demo talaba', phone: '', group: 'DEMO-1', hemis: '1000000001', login: '1000000001', status: 'active', at: Date.now() }, DEMO_PASSWORD);
-  const questions = Array.from({ length: 30 }, (_, i) => {
-    const n = i + 2;
-    return { q: `f(x)=x² uchun f'(${n}) nechaga teng?`, options: [n, 2 * n, n * n, 2 * n + 1].map(String), correct: 1 };
-  });
   return {
     users: [teacher, student],
     courses: [{ id: 'c1', teacherId: 't1', title: 'Matematik analiz (namuna)', desc: 'Limit va hosila bo‘yicha namuna kurs.', students: ['s1'] }],
     lessons: [
-      { id: 'l1', courseId: 'c1', kind: KINDS[0], title: 'Hosila tushunchasi', desc: 'Namuna ma’ruza. Test topshirib keyingi darsni oching.', video: '', pdf: '', slides: '', check: 'test', questions, prompt: '', order: 1 },
+      { id: 'l1', courseId: 'c1', kind: KINDS[0], title: 'Hosila tushunchasi', desc: 'Namuna ma’ruza. Test topshirib keyingi darsni oching.', video: '', pdf: '', slides: '', check: 'test', questions: demoQuestions(), prompt: '', order: 1 },
       { id: 'l2', courseId: 'c1', kind: KINDS[1], title: 'Python’da hosilani hisoblash', desc: 'Namuna amaliyot.', video: '', pdf: '', slides: '', check: 'code', questions: [], prompt: 'f(x)=x² uchun x=3 nuqtada taxminiy hosilani hisoblab chiqaring.', order: 2 },
     ],
     subs: [], attempts: {}, library: [], messages: [],
@@ -118,6 +119,8 @@ export default async req => {
   try { b = await req.json(); } catch { /* bo‘sh so‘rov */ }
   const db = await load();
   db.news ||= [];
+  const demoLesson = db.lessons.find(l => l.id === 'l1');
+  if (demoLesson) demoLesson.questions = demoQuestions();
   const uid = session(req);
   const me = uid === 'admin' ? { id: 'admin', role: 'admin', name: 'Administrator' } : db.users.find(u => u.id === uid && u.status === 'active');
 
