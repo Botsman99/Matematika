@@ -9,7 +9,7 @@ const DEMO_PASSWORD = 'Demo12345';
 const KINDS = ['Ma’ruza', 'Amaliyot', 'Laboratoriya', 'Mustaqil ta’lim'];
 const AI_MODEL = 'claude-haiku-5-5';
 // Demo rejim: true bo‘lsa, parolsiz kirish tugmalari ishlaydi
-const DEMO_OPEN = true;
+const DEMO_OPEN = false;
 
 const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), {
   status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'X-Content-Type-Options': 'nosniff', ...headers },
