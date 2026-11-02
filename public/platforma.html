@@ -119,7 +119,7 @@ function auth(mode = 'login') {
 
 const MENUS = {
   student: [['courses', 'Mening kurslarim'], ['other', 'Boshqa kurslar'], ['library', 'Kutubxona'], ['settings', 'Sozlamalar']],
-  teacher: [['overview', 'Umumiy tahlil'], ['rating', 'Reyting'], ['courses', 'Kurslarim'], ['lessons', 'Dars mashg‘ulotlari'], ['review', 'Topshiriqlar'], ['library', 'Kutubxona'], ['settings', 'Sozlamalar']],
+  teacher: [['overview', 'Umumiy tahlil'], ['rating', 'Reyting'], ['courses', 'Kurslarim'], ['lessons', 'Dars mashg‘ulotlari'], ['review', 'Topshiriqlar'], ['library', 'Kutubxona'], ['news', 'Yangiliklar'], ['settings', 'Sozlamalar']],
   admin: [['requests', 'Arizalar'], ['users', 'Foydalanuvchilar'], ['courses', 'Kurslar'], ['messages', 'Xabarlar'], ['files', 'Tozalash']],
 };
 
@@ -219,6 +219,7 @@ function teacher(d) {
   else if (page === 'lessons') lessons(d);
   else if (page === 'review') review(d);
   else if (page === 'library') tLibrary(d);
+  else if (page === 'news') tNews(d);
 }
 function courses(d) {
   const v = shell('Kurslarim', `<form class="card form" id="c"><h3>Yangi kurs</h3><label>Nomi<input name="title" required></label><label>Tavsif<textarea name="desc" rows="2" required></textarea></label><button class="btn">Qo‘shish</button><div class="msg" role="alert"></div></form>${d.courses.map(c => `<div class="card"><h3>${esc(c.title)}</h3><p class="muted">${esc(c.desc)}</p><p class="muted">${c.students.length} talaba · ${d.lessons.filter(l => l.courseId === c.id).length} dars</p><div class="row"><button class="btn ghost" data-ed="${c.id}" type="button">Tahrirlash</button><button class="btn red" data-d="${c.id}" type="button">O‘chirish</button></div></div>`).join('')}`);
@@ -251,6 +252,14 @@ function review(d) {
   const list = d.subs.filter(s => s.kind !== 'test').reverse();
   const v = shell('Topshiriqlar', list.map(s => `<form class="card form" data-s="${s.id}"><h3>${esc(s.student)}</h3><p class="muted">${esc(s.lesson)} · ${s.status === 'graded' ? 'Tasdiqlangan' : 'Tekshiruvda'}${s.ai ? ' · AI tavsiyasi' : ''}</p>${s.kind === 'file' ? `<a href="${safe(s.answer)}" target="_blank" rel="noopener">Faylni ochish</a>` : `<pre>${esc(s.answer)}</pre>`}${s.output ? `<pre>${esc(s.output)}</pre>` : ''}<label>Baho (%)<input name="percent" type="number" min="0" max="100" value="${s.percent ?? ''}" required></label><label>Izoh<textarea name="comment" rows="2">${esc(s.comment)}</textarea></label><button class="btn">Tasdiqlash</button><div class="msg" role="alert"></div></form>`).join('') || '<div class="card">Topshiriq yo‘q.</div>');
   v.querySelectorAll('[data-s]').forEach(f => act(f, async x => { await api('grade', { id: f.dataset.s, ...x }); go('review'); }));
+}
+function tNews(d) {
+  const v = shell('Yangiliklar', `<form class="card form" id="n"><label>Rasm havolasi (https, ixtiyoriy)<input name="image"></label><label>Sarlavha<input name="title" required></label><label>Matn<textarea name="text" rows="4" required></textarea></label><label>Manba havolasi (https)<input name="link"></label><button class="btn">Saqlash</button><div class="msg" role="alert"></div></form>${d.news.map(x => `<div class="card"><h3>${esc(x.title)}</h3><p class="muted">${esc(x.date)}</p><button class="btn ghost" data-e="${x.id}" type="button">Tahrirlash</button> <button class="btn red" data-d="${x.id}" type="button">O‘chirish</button></div>`).join('')}`);
+  const f = v.querySelector('#n');
+  let edit = '';
+  act(f, async x => { await api('saveNews', { ...x, id: edit }); go('news'); });
+  v.querySelectorAll('[data-e]').forEach(b => { b.onclick = () => { const n = d.news.find(x => x.id === b.dataset.e); edit = n.id; for (const k of ['image', 'title', 'text', 'link']) f.elements[k].value = n[k]; f.scrollIntoView(); }; });
+  v.querySelectorAll('[data-d]').forEach(b => { b.onclick = async () => { if (confirm('O‘chirilsinmi?')) { await api('delNews', { id: b.dataset.d }); go('news'); } }; });
 }
 function tLibrary(d) {
   const v = shell('Kutubxona', `<form class="card form" id="b"><label>Nomi<input name="title" required></label><label>Turi<select name="type"><option>Maqola</option><option>Tezis</option><option>O‘quv qo‘llanma</option><option>Darslik</option></select></label><label>Havola (https)<input name="url" required></label><button class="btn">Qo‘shish</button><div class="msg" role="alert"></div></form>${d.library.map(x => `<div class="card"><h3>${esc(x.title)}</h3><a href="${safe(x.url)}" target="_blank" rel="noopener">Ochish</a> <button class="btn red" data-d="${x.id}" type="button">O‘chirish</button></div>`).join('')}`);

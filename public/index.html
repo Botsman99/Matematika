@@ -324,6 +324,12 @@ footer h2 em{color:var(--glow)}
  <h2>Matematika — <em>aniq fikrlash</em> tili.</h2>
  <button class="mail" id="mail" type="button">rzsuyunov@gmail.com</button>
  <a class="mail" href="https://t.me/Ramziddin_Suyunov_matematik" target="_blank" rel="noopener" style="display:inline-block;margin-left:8px;text-decoration:none">Telegram: @Ramziddin_Suyunov_matematik</a>
+ <form id="contact" style="display:grid;gap:10px;max-width:520px;margin-top:28px">
+  <input name="name" required maxlength="120" placeholder="Ismingiz" aria-label="Ismingiz" style="padding:12px;border:0;border-radius:10px;font:inherit;color:#0a0f3c">
+  <input name="contact" required maxlength="120" placeholder="Telefon yoki Telegram" aria-label="Telefon yoki Telegram" style="padding:12px;border:0;border-radius:10px;font:inherit;color:#0a0f3c">
+  <textarea name="text" required maxlength="2000" rows="3" placeholder="Xabaringiz" aria-label="Xabaringiz" style="padding:12px;border:0;border-radius:10px;font:inherit;color:#0a0f3c"></textarea>
+  <button class="cta" style="border:0;justify-self:start">Yuborish</button><span id="contactMsg" role="status"></span>
+ </form>
  <div class="fine"><span>Samarqand, O‘zbekiston</span></div>
 </div></footer>
 
@@ -407,9 +413,10 @@ $('pubs').onclick = e => {
   if (hd) hd.setAttribute('aria-expanded', hd.parentElement.classList.toggle('open'));
 };
 
-fetch('/api/data').then(r => r.json()).then(d => {
+fetch('/api/data').then(r => r.json()).then(async d => {
   pubs = [...d.publications].sort((a, b) => b.year - a.year);
-  const news = [...(d.news || [])].sort((a, b) => b.date.localeCompare(a.date));
+  const live = await fetch('/lms-api/public', { method: 'POST' }).then(r => r.json()).then(x => x.news || []).catch(() => []);
+  const news = [...live, ...(d.news || [])].sort((a, b) => b.date.localeCompare(a.date));
   $('news').className = news.length ? 'news' : '';
   $('news').innerHTML = news.map(n => `<article class="post r">${n.image ? `<img src="${esc(n.image)}" alt="" loading="lazy">` : ''}<div><time>${esc(n.date)}</time><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p>${n.link ? `<a href="${esc(n.link)}" target="_blank" rel="noopener">Batafsil</a>` : ''}</div></article>`).join('') || `<div class="noNews r"><p>Savollar bo‘lsa, Telegram orqali yozishingiz mumkin.</p><a class="cta" href="https://t.me/Ramziddin_Suyunov_matematik" target="_blank" rel="noopener">Telegramda yozish</a></div>`;
   const types = [...new Set(pubs.map(p => p.type))];
@@ -535,6 +542,13 @@ function scenes() {
     l.addEventListener('pointerenter', () => gsap.fromTo(l, { rotate: 0, scale: 1 }, { rotate: gsap.utils.random(-14, 14), scale: 1.16, duration: .22, yoyo: true, repeat: 1, ease: 'sine.inOut', overwrite: 'auto' }));
   });
 }
+
+$('contact').onsubmit = async e => {
+  e.preventDefault();
+  const r = await fetch('/lms-api/message', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target))) }).catch(() => null);
+  $('contactMsg').textContent = r?.ok ? 'Xabar yuborildi' : 'Yuborilmadi, Telegram orqali yozing';
+  if (r?.ok) e.target.reset();
+};
 
 $('mail').onclick = async () => {
   const b = $('mail'), v = 'rzsuyunov@gmail.com';

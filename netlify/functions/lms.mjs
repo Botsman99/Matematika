@@ -115,11 +115,12 @@ export default async req => {
   let b = {};
   try { b = await req.json(); } catch { /* bo‘sh so‘rov */ }
   const db = await load();
+  db.news ||= [];
   const uid = session(req);
   const me = uid === 'admin' ? { id: 'admin', role: 'admin', name: 'Administrator' } : db.users.find(u => u.id === uid && u.status === 'active');
 
   if (action === 'public') {
-    return json({ stats: stats(db), courses: db.courses.map(c => ({ id: c.id, title: c.title, desc: c.desc, count: c.students.length })), library: db.library, kinds: KINDS });
+    return json({ stats: stats(db), courses: db.courses.map(c => ({ id: c.id, title: c.title, desc: c.desc, count: c.students.length })), library: db.library, news: db.news, kinds: KINDS });
   }
   if (action === 'me') return json({ user: me ? publicUser(me) : null });
 
@@ -236,7 +237,7 @@ export default async req => {
         const list = subs.filter(s => s.userId === u.id && s.percent !== null);
         return { id: u.id, name: u.name, group: u.group, done: list.length, avg: list.length ? Math.round(list.reduce((n, s) => n + s.percent, 0) / list.length) : 0 };
       }).sort((x, y) => y.avg - x.avg);
-      return json({ courses: mine, lessons, subs: subs.map(s => ({ ...s, student: db.users.find(u => u.id === s.userId)?.name || '—', lesson: db.lessons.find(l => l.id === s.lessonId)?.title })), students, library: db.library.filter(x => x.by === me.id) });
+      return json({ courses: mine, lessons, subs: subs.map(s => ({ ...s, student: db.users.find(u => u.id === s.userId)?.name || '—', lesson: db.lessons.find(l => l.id === s.lessonId)?.title })), students, library: db.library.filter(x => x.by === me.id), news: db.news.filter(x => x.by === me.id) });
     }
     if (action === 'saveCourse') {
       if (!text(b.title, 200) || !text(b.desc, 1000)) return fail('Nom va tavsif kiriting');
@@ -280,6 +281,20 @@ export default async req => {
       const p = Number(b.percent);
       if (!Number.isInteger(p) || p < 0 || p > 100) return fail('Baho 0–100 oralig‘ida bo‘lsin');
       Object.assign(s, { percent: p, comment: String(b.comment || '').slice(0, 1500), status: 'graded' });
+      await save(db);
+      return json({ ok: true });
+    }
+    if (action === 'saveNews') {
+      if (!text(b.title, 200) || !text(b.text, 3000) || !https(b.link) || !https(b.image)) return fail('Sarlavha, matn va https havolalarni tekshiring');
+      const fields = { title: b.title, text: b.text, link: b.link || '', image: b.image || '' };
+      const old = db.news.find(x => x.id === b.id && x.by === me.id);
+      if (old) Object.assign(old, fields);
+      else db.news.unshift({ id: id(), by: me.id, date: new Date().toISOString().slice(0, 10), ...fields });
+      await save(db);
+      return json({ ok: true });
+    }
+    if (action === 'delNews') {
+      db.news = db.news.filter(x => !(x.id === b.id && x.by === me.id));
       await save(db);
       return json({ ok: true });
     }
