@@ -8,6 +8,8 @@ const TEST_SIZE = 10;
 const DEMO_PASSWORD = 'Demo12345';
 const KINDS = ['Ma’ruza', 'Amaliyot', 'Laboratoriya', 'Mustaqil ta’lim'];
 const AI_MODEL = 'claude-haiku-5-5';
+// Demo rejim: true bo‘lsa, parolsiz kirish tugmalari ishlaydi
+const DEMO_OPEN = true;
 
 const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), {
   status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'X-Content-Type-Options': 'nosniff', ...headers },
@@ -120,7 +122,7 @@ export default async req => {
   const me = uid === 'admin' ? { id: 'admin', role: 'admin', name: 'Administrator' } : db.users.find(u => u.id === uid && u.status === 'active');
 
   if (action === 'public') {
-    return json({ stats: stats(db), courses: db.courses.map(c => ({ id: c.id, title: c.title, desc: c.desc, count: c.students.length })), library: db.library, news: db.news, kinds: KINDS });
+    return json({ stats: stats(db), courses: db.courses.map(c => ({ id: c.id, title: c.title, desc: c.desc, count: c.students.length })), library: db.library, news: db.news, kinds: KINDS, demo: DEMO_OPEN });
   }
   if (action === 'me') return json({ user: me ? publicUser(me) : null });
 
@@ -137,6 +139,14 @@ export default async req => {
     } else return fail('Rol noto‘g‘ri');
     await save(db);
     return json({ ok: true, pending: b.role === 'teacher' });
+  }
+
+  if (action === 'demo') {
+    if (!DEMO_OPEN) return fail('Ruxsat yo‘q', 403);
+    if (b.role === 'admin') return json({ ok: true }, 200, cookie('admin'));
+    const u = db.users.find(x => x.role === b.role && x.status === 'active');
+    if (!u) return fail('Demo hisob topilmadi', 404);
+    return json({ ok: true }, 200, cookie(u.id));
   }
 
   if (action === 'login') {

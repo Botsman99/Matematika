@@ -105,9 +105,11 @@ function auth(mode = 'login') {
   <div class="tabs"><button type="button" data-m="login">Kirish</button><button type="button" data-m="student">Talaba bo‘lish</button><button type="button" data-m="teacher">O‘qituvchi bo‘lish</button></div>
   ${mode === 'login' ? '<label>HEMIS ID yoki login<input name="login" required autocomplete="username"></label>' : reg[mode]}
   <label>Parol${mode === 'login' ? '' : ' (kamida 8 belgi)'}<input name="password" type="password" required></label>
-  <button class="btn">${mode === 'login' ? 'Kirish' : 'Ro‘yxatdan o‘tish'}</button><div class="msg" role="alert"></div></form></div>`;
+  <button class="btn">${mode === 'login' ? 'Kirish' : 'Ro‘yxatdan o‘tish'}</button>
+  ${mode === 'login' ? '<div class="tabs" id="demo"><span>Parolsiz demo:</span><button type="button" data-r="student">Talaba</button><button type="button" data-r="teacher">O‘qituvchi</button><button type="button" data-r="admin">Admin</button></div>' : ''}<div class="msg" role="alert"></div></form></div>`;
   const f = document.getElementById('f');
   f.querySelectorAll('[data-m]').forEach(b => { b.classList.toggle('on', b.dataset.m === mode); b.onclick = () => auth(b.dataset.m); });
+  f.querySelectorAll('[data-r]').forEach(b => { b.onclick = async () => { try { await api('demo', { role: b.dataset.r }); start(); } catch (x) { f.querySelector('.msg').textContent = x.message; } }; });
   act(f, async v => {
     if (mode === 'login') { await api('login', v); return start(); }
     const r = await api('register', { ...v, role: mode });
