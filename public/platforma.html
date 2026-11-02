@@ -109,6 +109,39 @@ fieldset{padding:12px!important;background:var(--bg);border-radius:12px!importan
 #chatBtn{box-shadow:0 8px 22px rgba(10,15,60,.3)}
 @media(max-width:820px){aside>div:first-child::before{display:none}.authBox{padding:20px}}
 @media(prefers-reduced-motion:reduce){main{animation:none}*{transition:none!important}}
+
+.today{display:flex;justify-content:space-between;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:24px;padding:30px;margin-bottom:16px;overflow:hidden}
+.today small{font:500 13px var(--mono);color:var(--sun)}
+.today h2{font-size:clamp(28px,4.4vw,52px);font-weight:800;margin:8px 0}
+.today p{margin:0 0 14px;opacity:.8}
+.today>b{font:800 clamp(56px,10vw,120px)/1 var(--head);color:var(--sun);letter-spacing:-.05em}
+.card h4{font:500 12px var(--mono);color:var(--blue);margin:16px 0 8px;text-transform:uppercase}
+.path{list-style:none;margin:0;padding:0 0 0 20px;border-left:3px solid var(--line)}
+.path li{position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0}
+.path li::before{content:"";position:absolute;left:-29px;width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--line)}
+.path li.now::before{border-color:var(--blue)}
+.path li.done::before{background:var(--sun);border-color:var(--sun)}
+.path li.lock{opacity:.5}
+.path span{font-weight:600;flex:1 1 180px}
+.path em{font:500 13px var(--mono);color:var(--blue)}
+.opt.big{padding:13px 14px;border:2px solid var(--line);font-size:17px}
+.opt.big:has(input:checked){border-color:var(--blue);background:#e5e7ff}
+.score{padding:20px 0}
+.score b{font:800 90px/1 var(--head);color:var(--bad)}
+.score.ok b{color:var(--ok)}
+#chatBtn{bottom:64px}
+#chat{bottom:118px}
+@media(max-width:820px){
+ aside{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:8;flex-direction:row;align-items:center;padding:6px 8px;background:var(--blue)}
+ aside>div:first-child{display:none}
+ .menu{flex:1}
+ .menu button{padding:9px 12px;font-size:14px}
+ .out{white-space:nowrap;padding:9px 6px;font-size:14px}
+ main{padding-bottom:150px}
+ #chatBtn{bottom:112px}
+ #chat{bottom:164px}
+ .today{padding:20px}
+}
 </style>
 </head>
 <body>
@@ -197,7 +230,12 @@ function student(d) {
     v.querySelectorAll('[data-e]').forEach(b => { b.onclick = async () => { await api('enroll', { courseId: b.dataset.e }); page = 'courses'; go('courses'); }; });
     return;
   }
-  const v = shell('Mening kurslarim', d.mine.map(c => `<div class="card"><h3>${esc(c.title)}</h3><p class="muted">${esc(c.desc)}</p>${c.lessons.map(l => `<div class="row ${l.open ? '' : 'lock'}"><span class="tag">${esc(l.kind)}</span><strong>${esc(l.title)}</strong>${l.best >= 0 ? `<span class="tag ${l.best >= 60 ? 'ok' : ''}">${l.best}%</span>` : ''}${l.open ? `<button class="btn ghost" data-l="${c.id}|${l.id}" type="button">Ochish</button>` : '<span class="muted">Qulflangan</span>'}</div>`).join('') || '<p class="muted">Dars yo‘q.</p>'}</div>`).join('') || '<div class="card">Hali kursga yozilmagansiz.</div>');
+  const all = d.mine.flatMap(c => c.lessons.map(l => ({ c, l })));
+  const passed = all.filter(x => x.l.best >= 60).length;
+  const next = all.find(x => x.l.open && x.l.best < 60);
+  const hero = `<section class="today"><div><small>${all.length ? `${passed} / ${all.length} dars o‘tildi` : 'Boshlash vaqti keldi'}</small><h2>${esc(next ? next.l.title : all.length ? 'Barcha darslar o‘tildi' : 'Birinchi kursingizni tanlang')}</h2>${next ? `<p>${esc(next.c.title)} · ${esc(next.l.kind)}</p><button class="btn" data-l="${next.c.id}|${next.l.id}" type="button">Davom etish →</button>` : ''}</div><b>${all.length ? Math.round(passed / all.length * 100) : 0}%</b></section>`;
+  const path = c => KINDS.map(k => [k, c.lessons.filter(l => l.kind === k)]).filter(([, a]) => a.length).map(([k, a]) => `<h4>${k}</h4><ol class="path">${a.map(l => `<li class="${l.best >= 60 ? 'done' : l.open ? 'now' : 'lock'}"><span>${esc(l.title)}</span>${l.best >= 0 ? `<em>${l.best}%</em>` : ''}${l.open ? `<button class="btn ghost" data-l="${c.id}|${l.id}" type="button">Ochish</button>` : '<small>Qulflangan</small>'}</li>`).join('')}</ol>`).join('');
+  const v = shell('Mening kurslarim', hero + d.mine.map(c => `<div class="card"><h3>${esc(c.title)}</h3><p class="muted">${esc(c.desc)}</p>${path(c) || '<p class="muted">Dars yo‘q.</p>'}</div>`).join(''));
   v.querySelectorAll('[data-l]').forEach(b => { b.onclick = () => { const [c, l] = b.dataset.l.split('|'); lesson(d.mine.find(x => x.id === c).lessons.find(x => x.id === l)); }; });
 }
 function lesson(l) {
@@ -213,12 +251,19 @@ function lesson(l) {
     t.innerHTML = `<h3>Test</h3><p class="muted">${l.count} savoldan 10 tasi tasodifiy beriladi. O‘tish uchun 60%.</p><button class="btn" id="s" type="button">Testni boshlash</button>`;
     t.querySelector('#s').onclick = async () => {
       const { questions } = await api('startTest', { lessonId: l.id });
-      t.innerHTML = `<form id="q" class="form">${questions.map((q, i) => `<fieldset style="border:0;padding:0"><legend><b>${i + 1}. ${esc(q.q)}</b></legend>${q.options.map((o, j) => `<label class="opt"><input type="radio" name="a${i}" value="${j}" required>${esc(o)}</label>`).join('')}</fieldset>`).join('')}<button class="btn">Yakunlash</button><div class="msg" role="alert"></div></form>`;
-      act(t.querySelector('#q'), async x => {
-        const r = await api('submitTest', { lessonId: l.id, answers: questions.map((_, i) => Number(x['a' + i])) });
-        t.innerHTML = `<h3>${r.percent}%</h3><p>${r.total} savoldan ${r.right} tasi to‘g‘ri. ${r.passed ? 'Keyingi dars ochildi.' : 'Qayta urinib ko‘ring.'}</p><button class="btn" id="n" type="button">Davom etish</button>`;
-        t.querySelector('#n').onclick = () => go('courses');
-      });
+      const ans = [];
+      const draw = i => {
+        const q = questions[i];
+        t.innerHTML = `<div class="bar" style="margin-bottom:14px"><i style="width:${i / questions.length * 100}%"></i></div><small class="muted">${i + 1} / ${questions.length}</small><form id="q" class="form"><h3>${esc(q.q)}</h3>${q.options.map((o, j) => `<label class="opt big"><input type="radio" name="a" value="${j}" required>${esc(o)}</label>`).join('')}<button class="btn">${i + 1 < questions.length ? 'Keyingi savol' : 'Yakunlash'}</button><div class="msg" role="alert"></div></form>`;
+        act(t.querySelector('#q'), async x => {
+          ans[i] = Number(x.a);
+          if (i + 1 < questions.length) return draw(i + 1);
+          const r = await api('submitTest', { lessonId: l.id, answers: ans });
+          t.innerHTML = `<div class="score ${r.passed ? 'ok' : ''}"><b>${r.percent}%</b><p>${r.total} savoldan ${r.right} tasi to‘g‘ri. ${r.passed ? 'Keyingi dars ochildi.' : 'O‘tish uchun 60% kerak.'}</p></div><button class="btn" id="n" type="button">Davom etish</button>`;
+          t.querySelector('#n').onclick = () => go('courses');
+        });
+      };
+      draw(0);
     };
     return;
   }
@@ -253,7 +298,7 @@ function teacher(d) {
   const rating = () => `<div class="card tw"><table><tr><th>Talaba</th><th>Guruh</th><th>Ishlar</th><th>O‘rtacha</th><th></th><th>Holat</th></tr>${d.students.map(s => `<tr><td>${esc(s.name)}</td><td>${esc(s.group)}</td><td>${s.done}</td><td>${s.avg}%</td><td><div class="bar"><i style="width:${s.avg}%"></i></div></td><td>${s.avg >= 75 ? 'Faol' : s.avg >= 60 ? 'O‘rtacha' : 'Past'}</td></tr>`).join('')}</table></div>`;
   if (page === 'overview' || !page) {
     const avg = d.students.length ? Math.round(d.students.reduce((n, s) => n + s.avg, 0) / d.students.length) : 0;
-    shell('Umumiy tahlil', `<div class="kpis">${[[d.students.length, 'Talabalar'], [d.students.filter(s => s.done).length, 'Faol talabalar'], [d.courses.length, 'Kurslar'], [avg + '%', 'O‘rtacha o‘zlashtirish']].map(([n, t]) => `<div class="kpi" style="${t.startsWith('O‘rtacha') ? 'background:#fff;color:var(--ink)' : ''}"><b>${n}</b>${t}</div>`).join('')}</div>${rating()}`);
+    shell('Umumiy tahlil', `${(() => { const w = d.subs.filter(x => x.kind !== 'test' && x.status !== 'graded'); return `<section class="today"><div><small>Bugungi ish</small><h2>${w.length ? `${w.length} ta topshiriq tekshiruvni kutmoqda` : 'Tekshiriladigan ish yo‘q'}</h2>${w.length ? '<button class="btn" data-p="review" type="button">Tekshirish →</button>' : ''}</div><b>${w.length}</b></section>`; })()}<div class="kpis">${[[d.students.length, 'Talabalar'], [d.students.filter(s => s.done).length, 'Faol talabalar'], [d.courses.length, 'Kurslar'], [avg + '%', 'O‘rtacha o‘zlashtirish']].map(([n, t]) => `<div class="kpi" style="${t.startsWith('O‘rtacha') ? 'background:#fff;color:var(--ink)' : ''}"><b>${n}</b>${t}</div>`).join('')}</div>${rating()}`);
   } else if (page === 'rating') shell('Reyting', rating());
   else if (page === 'courses') courses(d);
   else if (page === 'lessons') lessons(d);
