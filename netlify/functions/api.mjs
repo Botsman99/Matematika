@@ -3,8 +3,8 @@ import crypto from 'node:crypto';
 import { getStore } from '@netlify/blobs';
 import seed from '../../data.json' with { type: 'json' };
 
-// Demo rejim: panel parolsiz ochiq. Haqiqiy foydalanishdan oldin false qiling
-const DEMO_OPEN = true;
+// Demo rejim: true bo‘lsa panel parolsiz ochiq
+const DEMO_OPEN = false;
 const MAX_UPLOAD = 4 * 1024 * 1024;
 const SESSION_MS = 8 * 60 * 60 * 1000;
 const MIME = { '.jpg': 'image/jpeg', '.png': 'image/png', '.pdf': 'application/pdf' };
