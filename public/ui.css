@@ -1,0 +1,133 @@
+/* Dizayn tizimi: "daftar va doska" */
+:root{
+ --paper:#f5f3ee;--paper2:#ebe8df;--ink:#0a0f3c;--muted:#474c70;--rule:#0a0f3c;--soft:#cfccd9;
+ --blue:#2230f0;--sun:#ffc61a;--ok:#0b6f50;--bad:#b3261e;--board:#0a0f3c;--on-board:#f5f3ee;
+ --head:"Bricolage Grotesque",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+ --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s6:24px;--s8:32px;--s12:48px;
+ --bg:var(--paper);--card:transparent;--line:var(--soft)
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#0a0f3c;--paper2:#141a55;--ink:#f5f3ee;--muted:#c3c6e0;--rule:#f5f3ee;--soft:#3a4080;--blue:#a9b0ff;--board:#141a55;--bad:#ff9d94;--ok:#6fdcb6}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 "Instrument Sans",system-ui,sans-serif}
+h1,h2,h3,h4{font-family:var(--head);margin:0;letter-spacing:-.035em;line-height:1}
+a{color:inherit;text-underline-offset:3px}
+button,input,textarea,select{font:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* Boshqaruv elementlari */
+.btn{min-height:44px;padding:10px 20px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);font-weight:700;cursor:pointer;transition:transform .12s,background .12s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--sun)}
+.btn:active{transform:none;box-shadow:none}
+.btn.ghost{background:none;color:var(--ink)}
+.btn.red{background:none;border-color:transparent;color:var(--bad);padding-inline:0}
+.btn.red:hover{box-shadow:none;transform:none;text-decoration:underline}
+input,textarea,select{width:100%;min-height:44px;padding:10px 2px;border:0;border-bottom:2px solid var(--ink);border-radius:0;background:transparent;color:var(--ink)}
+input[type=radio]{width:auto;min-height:0}
+input:focus,textarea:focus,select:focus{outline:0;border-bottom-color:var(--blue);box-shadow:0 2px 0 var(--blue)}
+select option{color:#0a0f3c}
+label{display:grid;gap:2px;font:500 12px var(--mono);letter-spacing:.02em}
+label input,label textarea,label select{font:400 16px "Instrument Sans",system-ui,sans-serif}
+.msg{min-height:1.5em;font-weight:600}
+.tag{display:inline-block;font:500 12px var(--mono);color:var(--blue)}
+.tag::before{content:"§ "}
+.tag.ok{color:var(--ok)}
+.muted{color:var(--muted);font-size:14px}
+.form{display:grid;gap:var(--s4)}
+.row{display:flex;gap:var(--s3);flex-wrap:wrap;align-items:center;margin-top:var(--s2)}
+
+/* Kirish: doska */
+.auth{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);background:var(--paper)}
+.auth::before{content:"f'(x) = lim (f(x+h) − f(x)) / h";display:flex;align-items:end;padding:var(--s12);background:var(--board);color:var(--sun);font:800 clamp(38px,6vw,92px)/1 var(--head);letter-spacing:-.04em}
+.authBox{align-self:center;justify-self:center;width:100%;max-width:440px;padding:var(--s8) var(--s4);display:grid;gap:var(--s4)}
+.authBox h1{font-size:clamp(40px,6vw,64px);font-weight:800}
+.tabs{display:flex;gap:var(--s4);flex-wrap:wrap;align-items:center}
+.tabs button{min-height:44px;border:0;border-bottom:3px solid transparent;background:none;padding:6px 0;font-weight:700;cursor:pointer}
+.tabs button.on{border-color:var(--blue);color:var(--blue)}
+#demo{padding-top:var(--s3);border-top:1px solid var(--soft)}
+#demo span{width:100%;font:500 12px var(--mono);color:var(--muted)}
+
+/* Karkas */
+.app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:var(--s6);padding:var(--s6) var(--s4);background:var(--board);color:var(--on-board)}
+aside b{font:800 20px/1.1 var(--head);letter-spacing:-.02em}
+aside small{display:block;margin-top:4px;font:500 12px var(--mono);color:var(--sun)}
+.menu{display:grid;gap:2px;flex:1;align-content:start}
+.menu button{min-height:44px;background:none;border:0;border-left:3px solid transparent;color:var(--on-board);padding:8px 12px;text-align:left;font-weight:600;cursor:pointer;white-space:nowrap}
+.menu button:hover{border-left-color:var(--on-board)}
+.menu button.on{border-left-color:var(--sun);color:var(--sun)}
+.out{min-height:44px;background:none;border:0;color:var(--on-board);text-align:left;padding:8px 12px;font-weight:600;cursor:pointer;text-decoration:underline}
+main{min-width:0;padding:var(--s8) clamp(16px,5vw,72px) 96px;max-width:1180px;width:100%;animation:in .25s ease both}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+main h1{font-size:clamp(40px,7vw,88px);font-weight:800;margin-bottom:var(--s8)}
+
+/* Bo'limlar: quti emas, chiziq bilan ajratiladi */
+.card{padding:var(--s6) 0;border-top:2px solid var(--rule);overflow-wrap:anywhere}
+.card h3{font-size:clamp(22px,3vw,30px);margin-bottom:var(--s2)}
+.card p{margin:0 0 var(--s2)}
+
+/* Bugungi vazifa: doska */
+.today{position:relative;display:flex;justify-content:space-between;align-items:end;gap:var(--s6);margin:0 0 var(--s8);padding:var(--s8);background:var(--board);color:var(--on-board);overflow:hidden}
+.today small{font:500 13px var(--mono);color:var(--sun)}
+.today h2{font-size:clamp(30px,5vw,64px);font-weight:800;margin:var(--s2) 0}
+.today p{margin:0 0 var(--s4)}
+.today>b{font:800 clamp(64px,12vw,160px)/.8 var(--head);letter-spacing:-.06em;color:var(--sun)}
+.today .btn{background:var(--sun);border-color:var(--sun);color:#0a0f3c}
+.today .btn:hover{box-shadow:3px 3px 0 var(--on-board)}
+
+/* Kurs yo'li */
+.card h4{margin:var(--s4) 0 var(--s2);font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+.path{list-style:none;margin:0;padding:0 0 0 var(--s6);border-left:2px solid var(--rule)}
+.path li{position:relative;display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;min-height:56px;padding:var(--s2) 0}
+.path li::before{content:"";position:absolute;left:-31px;width:12px;height:12px;background:var(--paper);border:2px solid var(--rule);border-radius:50%}
+.path li.now::before{background:var(--blue);border-color:var(--blue)}
+.path li.done::before{background:var(--sun)}
+.path li.lock{color:var(--muted)}
+.path span{flex:1 1 180px;font-weight:600}
+.path em{font:500 14px var(--mono);font-style:normal}
+
+/* Test */
+.opt{display:flex;gap:var(--s3);align-items:center;min-height:52px;padding:var(--s2) var(--s3);border-bottom:1px solid var(--soft);font:400 17px "Instrument Sans",system-ui,sans-serif;cursor:pointer}
+.opt:hover{background:var(--paper2)}
+.opt:has(input:checked){background:var(--ink);color:var(--paper)}
+.score b{font:800 clamp(80px,16vw,160px)/1 var(--head);letter-spacing:-.05em;color:var(--bad)}
+.score.ok b{color:var(--ok)}
+.bar{height:6px;background:var(--soft);min-width:90px}
+.bar i{display:block;height:100%;background:var(--blue);transition:width .3s}
+
+/* Raqamlar va jadval */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:var(--s8);border-block:2px solid var(--rule)}
+.kpi,.kpi[style]{padding:var(--s4);border-left:1px solid var(--soft);background:none!important;color:inherit!important;font-size:14px}
+.kpi:first-child{border-left:0;padding-left:0}
+.kpi b{display:block;font:800 clamp(38px,6vw,68px)/1 var(--head);letter-spacing:-.04em;color:var(--blue)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font:500 12px var(--mono);text-align:left;padding:var(--s2);border-bottom:2px solid var(--rule)}
+td{padding:var(--s3) var(--s2);border-bottom:1px solid var(--soft);white-space:nowrap}
+tr:hover td{background:var(--paper2)}
+
+/* Kod va chat */
+pre{margin:var(--s2) 0 0;padding:var(--s3);background:var(--board);color:var(--on-board);font:500 13px var(--mono);overflow:auto;max-height:240px}
+textarea.code{min-height:200px;padding:var(--s3);border:2px solid var(--ink);font:500 14px var(--mono)}
+#chatBtn{position:fixed;right:16px;bottom:64px;z-index:9;background:var(--blue);border-color:var(--blue);color:#fff}
+#chat{position:fixed;right:16px;bottom:118px;z-index:9;width:min(340px,calc(100vw - 32px));padding:var(--s4);background:var(--paper);border:2px solid var(--rule)}
+#chatLog{max-height:260px;overflow:auto;font-size:14px;white-space:pre-wrap}
+
+@media(max-width:820px){
+ .auth{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr}
+ .auth::before{padding:var(--s6) var(--s4);font-size:30px}
+ .app{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr}
+ aside{position:sticky;top:0;z-index:8;height:auto;flex-direction:row;align-items:center;gap:var(--s2);padding:4px var(--s2)}
+ aside>div:first-child{display:none}
+ .menu{display:flex;flex:1;overflow-x:auto;scrollbar-width:none}
+ .menu button{border-left:0;border-bottom:3px solid transparent}
+ .menu button.on{border-bottom-color:var(--sun)}
+ .out{white-space:nowrap;padding-inline:6px}
+ main{padding:var(--s6) var(--s4) 120px}
+ main h1{font-size:40px;margin-bottom:var(--s6)}
+ .today{margin-inline:-16px;padding:var(--s6) var(--s4)}
+ .kpis{grid-template-columns:1fr 1fr}
+ .kpi:nth-child(odd){border-left:0;padding-left:0}
+ input,textarea,select{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){main{animation:none}*{transition:none!important}}
